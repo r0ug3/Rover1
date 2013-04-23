@@ -1,0 +1,66 @@
+#include <C:\Users\r0ugeHaK3r\Documents\Arduino\arduino-1.0.1\libraries\Arm\Arm.cpp>
+#include <C:\Users\r0ugeHaK3r\Documents\Arduino\arduino-1.0.1\libraries\Arm\Arm.h>
+Arm arm(0);
+int ctrl=1;
+int dist=arm.distance();
+
+void setup(){
+
+Serial.begin(9600);
+Serial.println("Gripper");
+}
+
+void spin(int x){
+for (int i=0; i<x; i++){
+  arm.moveMotor(2,0,5,5);
+}
+}
+
+void forward(int x){
+  for(int i=0; i< x; i++){
+arm.moveMotor(4,0,5,5);
+arm.moveMotor(2,0,5,5);
+}
+}
+
+void open_gripper(int x){
+for(int i=0; i<x; i++){
+arm.moveMotor(1,0,5,40);
+}
+}
+
+void close_gripper(int x){
+  for (int i=0; i<x;i++){
+	arm.moveMotor(1,1,5,40);
+}
+}
+
+void loop(){
+arm.checkData();
+while(ctrl>0){
+while(dist>18){
+if(dist>50){
+	spin(1);
+	delay(1000);
+	dist = arm.distance();
+	Serial.print("Distance: ");
+	Serial.println(dist);
+}
+else{
+	forward(1);
+	delay(1200);
+	dist = arm.distance();
+	Serial.print("Distance: ");
+	Serial.println(dist);
+}
+}
+
+open_gripper(2);
+forward(3);
+close_gripper(2);
+spin(25);
+forward(30);
+open_gripper(2);
+close_gripper(2);
+
+}}
